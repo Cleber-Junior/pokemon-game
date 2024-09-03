@@ -10,21 +10,6 @@ ctx.font = "40px Tiny5";
 
 // Controle do Ashe (personagem)
 let positionCanvas = canvas.getBoundingClientRect();
-const mouse = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-  click: false,
-};
-
-canvas.addEventListener("mousedown", function (event) {
-  mouse.click = true;
-  mouse.x = event.x - positionCanvas.left;
-  mouse.y = event.y - positionCanvas.top;
-  console.log(mouse.x, mouse.y);
-});
-canvas.addEventListener("mouseup", function () {
-  mouse.click = false;
-});
 
 // Controle do teclado
 const keys = {
@@ -45,7 +30,7 @@ window.addEventListener("keyup", function (event) {
     keys[event.key] = false;
   }
 });
-
+console.log(keys);
 // Personagem
 const playerSprite = new Image();
 playerSprite.src = "./img/sprites/hero.png";
@@ -53,7 +38,7 @@ class Player {
   constructor() {
     this.x = canvas.width / 2;
     this.y = canvas.height / 2;
-    this.radius = 30;
+    this.radius = 20;
     this.angle = 0;
     this.frameX = 0;
     this.frameY = 0;
@@ -66,9 +51,6 @@ class Player {
     this.moving = false;
   }
   update() {
-    const dx = Math.round(this.x) - Math.round(mouse.x);
-    const dy = Math.round(this.y) - Math.round(mouse.y);
-
     if (keys.ArrowUp && !keys.ArrowLeft && !keys.ArrowRight) {
       if (this.y - this.radius > 0) {
         this.y -= 5;
@@ -97,7 +79,6 @@ class Player {
 
     if (!this.moving) {
       this.frameX = 0;
-      console.log("Parado", this.frameX);
     } else {
       this.frameTimer++;
       if (this.frameTimer >= this.frameInterval) {
@@ -108,14 +89,6 @@ class Player {
   }
 
   draw() {
-    if (mouse.click) {
-      ctx.lineWidth = 0.2;
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(mouse.x, mouse.y);
-      ctx.stroke();
-    }
-
     const zoom = 1.25;
     ctx.drawImage(
       playerSprite,
@@ -143,7 +116,7 @@ class Dogs {
     this.x = Math.random() * canvas.width;
     this.y = canvas.height + 50 + Math.random() * canvas.height;
     this.speed = Math.random() * 5 + 1;
-    this.radius = 30;
+    this.radius = 10;
     this.angle = 0;
     this.frameX = 0;
     this.frameY = 3;
@@ -259,7 +232,6 @@ const pokebolasArray = [];
 function pokebolaGenerate() {
   if (gameFrame % 200 == 0) {
     pokebolasArray.push(new Pokebola());
-    console.log("Pokebola gerada!");
   }
   for (let i = 0; i < pokebolasArray.length; i++) {
     pokebolasArray[i].update();
@@ -319,10 +291,15 @@ backgroundImage.onload = () => {
     });
   }
 
+  const trilhaSonora = new Audio("./sounds/trilhaSonora.mp3");
+  trilhaSonora.loop = true;
+  trilhaSonora.volume = 0.1;
+
   // Função para iniciar o jogo
   function startGame() {
     document.getElementById("startScreen").style.display = "none";
-      animate();
+    trilhaSonora.play();
+    animate();
   }
 
   // Adicionar evento ao botão de início
