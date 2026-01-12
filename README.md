@@ -1,3 +1,3 @@
 <p align="center">
-    <b>Projeto desenvolvido no curso de React Completo do curso da Origamid. Ranek é um sistema simples de um loja, apenas o Front-End foi feito com a utilização da API do curso.</b>
+    <b>Jogo 2d com tematica pokemon. Objetico do jogo é pegar o maior número de pokebolas que conseguir.</b>
 </p>
